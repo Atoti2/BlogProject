@@ -17,7 +17,7 @@ const NavBar = () => {
   
   const tabs = [
     { route: <FaBlogger />, path: "/", show: true },
-    { route: "| Posts |", path: "/posts", show: true },
+    { route: "Posts", path: "/posts", show: true },
     { route: "Post ", path: "/update/:id", show: isLoggedIn},
   ];
 
@@ -59,7 +59,7 @@ const NavBar = () => {
             </div>
             <NavLink to="/profile">
               <div className="avatar items-center space-x-5">
-                  <spa className="font-bold text-lg text-pink-300">{user.displayName}</spa>
+                  <spa className="font-bold text-lg">{user.displayName}</spa>
                 <div className="w-12 rounded-full">
                   <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
                 </div>

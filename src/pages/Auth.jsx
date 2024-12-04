@@ -2,30 +2,22 @@ import React, { useState, useContext } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { UserContext } from '../context/UserContext';
 import { useEffect } from "react";
+import Toastify from "../components/Toastify";
 
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 const Auth = () => {
   const location = useLocation();  
   const correctText = location.pathname === "/register" ? "Register" : "Login"; 
   const isRegister = location.pathname === "/register";
   const { user, signInUser, signUpUser, msg } = useContext(UserContext);
-  const navigate = useNavigate(); 
-  console.log(msg);
   
-  useEffect(() => {
-    if (user) {
-      navigate("/"); 
-    }
-  }, [user, navigate]);
   const handleSubmit = (event) => {
     event.preventDefault();  
-    
     const data = new FormData(event.currentTarget);
     console.log(data.get('email'), data.get('password'), data.get('username'));  
     if(!isRegister){
       signInUser(data.get('email'), data.get('password'));  
+      
     }else{
       signUpUser(data.get('email'), data.get('password'), data.get('displayName'))
     }
@@ -35,7 +27,6 @@ const Auth = () => {
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4 sm:px-6 md:px-8">
       <div className="w-full max-w-sm bg-white p-6 rounded-lg shadow-lg">
         <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">{correctText}</h2>
-      <ToastContainer/>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             {
@@ -90,6 +81,7 @@ const Auth = () => {
           )}
           <p className="text-center mt-5">Changed your mind? <NavLink className="text-red-700 font-bold" to={"/"}>go home</NavLink></p>
         </form>
+        {msg && <Toastify {...msg}/>}
       </div>
     </div>
   );
