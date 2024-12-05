@@ -22,7 +22,7 @@ export const UserProvider = ({children}) => {
         
         try {
             await signInWithEmailAndPassword(auth, email, password)
-            delete msg?.err
+            setMsg({})
             setMsg({ signin: "Sikeres bejelentkezés" })  
         } catch(error) {
             console.log(error);
@@ -34,7 +34,7 @@ export const UserProvider = ({children}) => {
         try {
             await createUserWithEmailAndPassword(auth, email, password)
             await updateProfile(auth.currentUser, { displayName })
-            delete msg?.err
+            setMsg({})
             setMsg({ signup: "Sikeres regisztráció" })  
         } catch (error) {
             console.log(error);
@@ -45,7 +45,7 @@ export const UserProvider = ({children}) => {
     const logOutUser = async () => {
         try {
             await signOut(auth)
-            delete msg?.signin
+            setMsg({})
         }catch(error){
             console.log(error);
         }
@@ -60,9 +60,20 @@ export const UserProvider = ({children}) => {
             setMsg({err: error.message})
         }
     }
+
+    const updateUser = async (displayName) => {
+        try {
+            await updateProfile(auth.currentUser, { displayName })
+            setMsg({})
+            setMsg({update: "Sikeres módoistás"})
+        } catch (error) {
+            setMsg({err: error.message})
+
+        }
+    }
     
     return (
-        <UserContext.Provider value={{user, signInUser, logOutUser, signUpUser, msg, resetPassword}}>
+        <UserContext.Provider value={{user, signInUser, logOutUser, signUpUser, msg, resetPassword, setMsg, updateUser}}>
             {children}
         </UserContext.Provider>
     )

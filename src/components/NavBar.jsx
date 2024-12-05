@@ -17,18 +17,16 @@ const NavBar = () => {
   const tabs = [
     { route: <FaBlogger />, path: "/", show: true },
     { route: "Posts", path: "/posts/all", show: true },
-    { route: "Write ", path: "/update/:id", show: isLoggedIn},
+    { route: "Write", path: "/update/:id", show: isLoggedIn },
   ];
-
 
   return (
     <div className="flex flex-col overflow-hidden">
       {!isAuth && (
         <ul 
-          className={`p-4 z-50 backdrop-blur-lg ${isHomePage ? "top-0 fixed" : "bg-slate-800 fixed top-0"}  w-screen text-center flex justify-between items-center sm:flex-row flex-col shadow-xl transition-transform duration-300 `}
+          className={`p-4 z-50 backdrop-blur-lg ${isHomePage ? "top-0 fixed" : "bg-slate-800 fixed top-0"} w-screen text-center flex justify-between items-center sm:flex-row flex-col shadow-xl transition-transform duration-300`}
         >
           <div className='flex justify-between items-center w-full'>
-
             <div className="lg:hidden">
               <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="btn btn-ghost backdrop-blur-md">
                 <svg
@@ -56,7 +54,7 @@ const NavBar = () => {
                   <li key={tab.route}>
                     <NavLink 
                       onClick={() => setIsMenuOpen(false)}
-                      className={`text-2xl font-mono cursor-pointer transition-all`} 
+                      className={`text-2xl font-mono cursor-pointer transition-all focus:ring-2 focus:ring-yellow-500 focus:outline-none focus:text-white`} 
                       to={tab.path}
                     >
                       {tab.route}
@@ -65,45 +63,50 @@ const NavBar = () => {
                 ))}
                 {!isLoggedIn ? (
                   <>
-                    <li><NavLink onClick={() => setIsMenuOpen(false)} className="text-2xl font-mono cursor-pointer transition-all" to="/login">Sign in</NavLink></li>
-                    <li><NavLink  onClick={() => setIsMenuOpen(false)} className="text-2xl font-mono cursor-pointer transition-all " to="/register">Sign up</NavLink></li>
+                    <li><NavLink onClick={() => setIsMenuOpen(false)} className="text-2xl font-mono cursor-pointer transition-all focus:ring-2 focus:ring-yellow-500 focus:outline-none focus:text-white" to="/login">Sign in</NavLink></li>
+                    <li><NavLink onClick={() => setIsMenuOpen(false)} className="text-2xl font-mono cursor-pointer transition-all focus:ring-2 focus:ring-yellow-500 focus:outline-none focus:text-white" to="/register">Sign up</NavLink></li>
                   </>
                 ) : (
-                  <li><NavLink to="/" onClick={() => logOutUser()} className="text-2xl font-mono cursor-pointer transition-all">Log out</NavLink></li>
-                )}
+                  <>
+                    <li><NavLink to="/" onClick={() => logOutUser()} className="text-2xl font-mono cursor-pointer transition-all focus:ring-2 focus:ring-yellow-500 focus:outline-none focus:text-white">Log out</NavLink></li>
+                    <li><NavLink onClick={() => setIsMenuOpen(false)} to="/profile" className="text-2xl font-mono cursor-pointer transition-all focus:ring-2 focus:ring-yellow-500 focus:outline-none focus:text-white">Profile</NavLink></li>
+                  </>
+               )}
               </ul>
             </div>
           )}
 
           <div className="navbar-center hidden lg:flex w-full justify-between items-center">
-          <ul className="menu menu-horizontal px-1 flex justify-start items-center gap-5 text-slate-100">
-          {tabs.map((tab) => (
-  <li key={tab.route}>
-    <NavLink 
-      className={
-        `${isHomePage ? "hover:bg-slate-800 hover:text-slate-100" : "hover:bg-slate-100 hover:text-slate-800"} 
-        text-2xl rounded-md transition-all p-1 
-        `
-      }
-      to={tab.path}
-    >
-      {tab.route}
-    </NavLink>
-  </li>
-))}
-        </ul>
+            <ul className="menu menu-horizontal px-1 flex justify-start items-center gap-5 text-slate-100">
+              {tabs.map((tab) => (
+                <li key={tab.path}>
+                  <NavLink 
+                    className={`
+                      ${isHomePage ? "hover:bg-slate-800 hover:text-slate-100" : "hover:bg-slate-100 hover:text-slate-800"} 
+                      text-2xl rounded-md transition-all p-1 focus:ring-2 focus:ring-yellow-500 focus:outline-none focus:text-white
+                    `}
+                    to={tab.path}
+                  >
+                    {tab.route}
+                  </NavLink>
+                </li>
+              ))}
+            </ul>
+
             <div className="flex gap-5 mr-5 text-slate-100 font-mono justify-end items-center">
               {isLoggedIn ? (
                 <>
                   <NavLink to={"/"} onClick={() => logOutUser()}>
-                    <button className={`${isHomePage ? "hover:bg-slate-800 hover:text-slate-100" : "hover:bg-slate-100 hover:text-slate-800"} text-2xl rounded-md transition-all p-1`}>Log out</button>
+                    <button className={`${isHomePage ? "hover:bg-slate-800 hover:text-slate-100" : "hover:bg-slate-100 hover:text-slate-800"} text-2xl rounded-md transition-all p-1 focus:ring-2 focus:ring-yellow-500 focus:outline-none focus:text-white`}>
+                      Log out
+                    </button>
                   </NavLink>
                   <div className="dropdown dropdown-left dropdown-bottom">
                     <div tabIndex={0} role="button" className={`${isHomePage ? "hover:bg-slate-800 hover:text-slate-100" : "hover:bg-slate-100 hover:text-slate-800"} p-1 rounded-xl`}>
                       <HiDotsVertical />
                     </div>
                     <ul tabIndex={0} className="dropdown-content menu mt-5 gap-3 bg-slate-800 text-slate-100 rounded-box z-[1] w-52 p-2 shadow">
-                      <li className='cursor-pointer hover:scale-[1.03]'>Personal data</li>
+                      <NavLink to={"/profile"}><li className='cursor-pointer hover:scale-[1.03]'>Personal data</li></NavLink>
                       <li className='cursor-pointer hover:scale-[1.03]'>Delete account</li>
                     </ul>
                   </div>
@@ -119,10 +122,14 @@ const NavBar = () => {
               ) : (
                 <>
                   <NavLink to="/login">
-                    <button className={`${isHomePage ? "hover:bg-slate-800 hover:text-slate-100" : "hover:bg-slate-100 hover:text-slate-800"} text-2xl rounded-md transition-all p-1`}>Sign in</button>
+                    <button className={`${isHomePage ? "hover:bg-slate-800 hover:text-slate-100" : "hover:bg-slate-100 hover:text-slate-800"} text-2xl rounded-md transition-all p-1 focus:ring-2 focus:ring-yellow-500 focus:outline-none focus:text-white`}>
+                      Sign in
+                    </button>
                   </NavLink>
                   <NavLink to="/register">
-                    <button className={`${isHomePage ? "hover:bg-slate-800 hover:text-slate-100" : "hover:bg-slate-100 hover:text-slate-800"} text-2xl rounded-md transition-all p-1`}>Sign up</button>
+                    <button className={`${isHomePage ? "hover:bg-slate-800 hover:text-slate-100" : "hover:bg-slate-100 hover:text-slate-800"} text-2xl rounded-md transition-all p-1 focus:ring-2 focus:ring-yellow-500 focus:outline-none focus:text-white`}>
+                      Sign up
+                    </button>
                   </NavLink>
                 </>
               )}
@@ -130,7 +137,7 @@ const NavBar = () => {
           </div>
         </ul>
       )}
-      <Outlet/>
+      <Outlet />
     </div>
   );
 }
