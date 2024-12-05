@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const Toastify = ({err, signin, signup}) => {
+const Toastify = ({err, signin, signup, resetPW}) => {
     const navigate = useNavigate()
     useEffect(() => {
         if(err){
@@ -18,6 +18,12 @@ const Toastify = ({err, signin, signup}) => {
             }, 2000)
         }else if(signup){
             toast.success(signup, {position: "top-right"})
+            setTimeout(() => {
+                navigate("/login")
+            }, 2000)
+        }
+        if(resetPW){
+            toast.success(resetPW, {position: "top-right"})
             setTimeout(() => {
                 navigate("/login")
             }, 2000)

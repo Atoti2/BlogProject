@@ -8,9 +8,7 @@ import { UserContext } from '../context/UserContext';
 const NavBar = () => {
   const location = useLocation();
   const { user, logOutUser } = useContext(UserContext);
-  const [isHidden, setIsHidden] = useState(false);
-  const [lastScrollY, setLastScrollY] = useState(0);
-  const [isMenuOpen, setIsMenuOpen] = useState(false); // State for mobile menu toggle
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const isHomePage = location.pathname === "/";
   const isAuth = location.pathname === "/register" || location.pathname === "/login"; 
@@ -18,31 +16,16 @@ const NavBar = () => {
 
   const tabs = [
     { route: <FaBlogger />, path: "/", show: true },
-    { route: "Posts", path: "/posts", show: true },
-    { route: "Post ", path: "/update/:id", show: isLoggedIn},
+    { route: "Posts", path: "/posts/all", show: true },
+    { route: "Write ", path: "/update/:id", show: isLoggedIn},
   ];
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > lastScrollY) {
-        setIsHidden(true);
-      } else {
-        setIsHidden(false);
-      }
-
-      setLastScrollY(window.scrollY);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [lastScrollY]);
 
   return (
     <div className="flex flex-col overflow-hidden">
       {!isAuth && (
         <ul 
-          className={`p-4 z-50 backdrop-blur-lg ${isHomePage ? 'top-0 fixed' : 'bg-slate-800 m-0'} w-screen text-center flex justify-between items-center sm:flex-row flex-col shadow-xl transition-transform duration-300 ${isHidden ? '-translate-y-full' : 'translate-y-0'}`}
+          className={`p-4 z-50 backdrop-blur-lg ${isHomePage ? "top-0 fixed" : "bg-slate-800 fixed top-0"}  w-screen text-center flex justify-between items-center sm:flex-row flex-col shadow-xl transition-transform duration-300 `}
         >
           <div className='flex justify-between items-center w-full'>
 
@@ -86,7 +69,7 @@ const NavBar = () => {
                     <li><NavLink  onClick={() => setIsMenuOpen(false)} className="text-2xl font-mono cursor-pointer transition-all " to="/register">Sign up</NavLink></li>
                   </>
                 ) : (
-                  <li><NavLink to="/" onClick={() => logOutUser()}>Log out</NavLink></li>
+                  <li><NavLink to="/" onClick={() => logOutUser()} className="text-2xl font-mono cursor-pointer transition-all">Log out</NavLink></li>
                 )}
               </ul>
             </div>
@@ -108,10 +91,7 @@ const NavBar = () => {
     </NavLink>
   </li>
 ))}
-
         </ul>
-
-
             <div className="flex gap-5 mr-5 text-slate-100 font-mono justify-end items-center">
               {isLoggedIn ? (
                 <>
@@ -150,7 +130,7 @@ const NavBar = () => {
           </div>
         </ul>
       )}
-      <Outlet />
+      <Outlet/>
     </div>
   );
 }

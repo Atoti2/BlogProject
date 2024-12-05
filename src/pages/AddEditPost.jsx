@@ -24,7 +24,7 @@ const AddEditPost = () => {
     console.log(string);
     
     return (
-        <div style={{ width: 500, height: 300, border: '1px solid lightgray' }}>
+        <div style={{ width: 500, height: 300, border: '1px solid lightgray' }} className='mt-[88px]'>
             <div ref={quillRef} />
             <button onClick={() => setString(quill.root.innerHTML)}>Save</button>
         </div>

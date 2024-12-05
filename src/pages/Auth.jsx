@@ -10,7 +10,8 @@ const Auth = () => {
   const correctText = location.pathname === "/register" ? "Register" : "Login"; 
   const isRegister = location.pathname === "/register";
   const { user, signInUser, signUpUser, msg } = useContext(UserContext);
-  
+  const navigate = useNavigate()
+
   const handleSubmit = (event) => {
     event.preventDefault();  
     const data = new FormData(event.currentTarget);
@@ -69,7 +70,17 @@ const Auth = () => {
             {isRegister ? "Register" : "Log in"}
           </button>
           
-
+        </form>
+          {
+            !isRegister && (
+              <button
+              onClick={() => navigate("/pwreset")}
+              className="w-full mt-3 py-2 px-4 bg-indigo-600 text-white font-bold rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                Forgot your password?
+            </button>
+            )
+          }
+          
           {!isRegister ? (
             <p className="italic text-base text-center mt-3">Don't have an account yet? 
               <NavLink className="text-indigo-700 font-bold" to="/register"> create one</NavLink>
@@ -80,7 +91,6 @@ const Auth = () => {
             </p>
           )}
           <p className="text-center mt-5">Changed your mind? <NavLink className="text-red-700 font-bold" to={"/"}>go home</NavLink></p>
-        </form>
         {msg && <Toastify {...msg}/>}
       </div>
     </div>

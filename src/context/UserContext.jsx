@@ -1,6 +1,6 @@
 import React from 'react'
 import { auth } from '../utils/firebaseApp'
-import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut, updateProfile } from 'firebase/auth'
+import { createUserWithEmailAndPassword, onAuthStateChanged, sendPasswordResetEmail, signInWithEmailAndPassword, signOut, updateProfile } from 'firebase/auth'
 import { createContext } from 'react'
 import { useState } from 'react'
 import { useEffect } from 'react'
@@ -42,7 +42,6 @@ export const UserProvider = ({children}) => {
         }
     }
     
-
     const logOutUser = async () => {
         try {
             await signOut(auth)
@@ -51,12 +50,19 @@ export const UserProvider = ({children}) => {
             console.log(error);
         }
     }
-    
-    
 
-
+    const resetPassword = async (email) => {
+        try {
+            await sendPasswordResetEmail(auth, email)
+            setMsg({})
+            setMsg({resetPW: "Jelszóvisszaállitási email elküldve."})
+        } catch (error) {
+            setMsg({err: error.message})
+        }
+    }
+    
     return (
-        <UserContext.Provider value={{user, signInUser, logOutUser, signUpUser, msg}}>
+        <UserContext.Provider value={{user, signInUser, logOutUser, signUpUser, msg, resetPassword}}>
             {children}
         </UserContext.Provider>
     )

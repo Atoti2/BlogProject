@@ -1,6 +1,7 @@
 import React from 'react'
+import { NavLink } from 'react-router';
 
-const Topic = ({ title }) => {
+const Topic = ({ title, route }) => {
   return (
     <div className="card glass w-96 group">
       <div 
@@ -18,9 +19,11 @@ const Topic = ({ title }) => {
         </div>
 
         <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-10">
-          <button className="p-3 bg-indigo-700 border-none text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            Check it out
-          </button>
+        <NavLink to={route}>
+            <button className="p-3 bg-indigo-700 border-none text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              Check it out
+            </button>
+        </NavLink>
         </div>
       </div>
     </div>
