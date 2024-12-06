@@ -19,6 +19,7 @@ const Profile = () => {
       displayName: user?.displayName || '',
     }
   });
+  
   console.log(user);
   
 

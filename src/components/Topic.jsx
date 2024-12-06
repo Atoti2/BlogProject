@@ -1,13 +1,13 @@
 import React from 'react'
 import { NavLink } from 'react-router';
 
-const Topic = ({ title, route }) => {
+const Topic = ({ title, url}) => {
   return (
     <div className="card glass w-96 group">
       <div 
         className="card-body p-0 relative overflow-hidden bg-cover bg-center h-72 cursor-pointer"
         style={{
-          backgroundImage: 'url("https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp")',
+          backgroundImage: `url(${url})`,
         }}
       >
         <div className="absolute inset-0 bg-black opacity-50 group-hover:opacity-30 transition-opacity duration-300"></div>
@@ -19,11 +19,11 @@ const Topic = ({ title, route }) => {
         </div>
 
         <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-10">
-        <NavLink to={route}>
+          <NavLink to={"/"}>
             <button className="p-3 bg-indigo-700 border-none text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
               Check it out
             </button>
-        </NavLink>
+          </NavLink>
         </div>
       </div>
     </div>
