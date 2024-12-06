@@ -10,7 +10,7 @@ export const uploadFile = async (file) => {
             `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`,
             formData
         );
-        return response.data.secure_url;
+        return {url: response.data.secure_url, id: response.data.public_id}
     } catch (error) {
         console.error("File upload failed:", error);
         throw error; 

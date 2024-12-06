@@ -56,14 +56,16 @@ export const UserProvider = ({children}) => {
             await sendPasswordResetEmail(auth, email)
             setMsg({})
             setMsg({resetPW: "Jelszóvisszaállitási email elküldve."})
-        } catch (error) {
+        } catch (error) { 
             setMsg({err: error.message})
         }
     }
 
-    const updateUser = async (displayName) => {
+    const updateUser = async (displayName, photoURL) => {
         try {
-            await updateProfile(auth.currentUser, { displayName })
+            if(displayName && photoURL) await updateProfile(auth.currentUser, { displayName, photoURL })
+            else if(displayName) await updateProfile(auth.currentUser, { displayName })
+            else if(photoURL) await updateProfile(auth.currentUser, { photoURL })
             setMsg({})
             setMsg({update: "Sikeres módoistás"})
         } catch (error) {

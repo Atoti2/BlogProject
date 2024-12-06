@@ -4,11 +4,17 @@ import { FaBlogger } from "react-icons/fa";
 import { HiDotsVertical } from "react-icons/hi";
 import { useContext } from 'react';
 import { UserContext } from '../context/UserContext';
+import { extractUrlAndId } from '../utils/utils';
 
 const NavBar = () => {
   const location = useLocation();
   const { user, logOutUser } = useContext(UserContext);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [avatar, setAvatar] = useState(null)
+  useEffect(() => {
+    user?.photoURL && setAvatar(extractUrlAndId(user.photoURL).url)
+  }, [user])
+
 
   const isHomePage = location.pathname === "/";
   const isAuth = location.pathname === "/register" || location.pathname === "/login"; 
@@ -114,7 +120,7 @@ const NavBar = () => {
                     <div className="avatar items-center space-x-5">
                       <span className="font-bold text-lg">{user.displayName}</span>
                       <div className="w-12 rounded-full">
-                        <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+                        <img src={avatar} />
                       </div>
                     </div>
                   </NavLink>
