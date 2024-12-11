@@ -78,6 +78,8 @@ const NavBar = () => {
                   <>
                     <li><NavLink to="/" onClick={() => logOutUser()} className="text-2xl font-mono cursor-pointer transition-all focus:ring-2 focus:ring-yellow-500 focus:outline-none focus:text-white">Log out</NavLink></li>
                     <li><NavLink onClick={() => setIsMenuOpen(false)} to="/profile" className="text-2xl font-mono cursor-pointer transition-all focus:ring-2 focus:ring-yellow-500 focus:outline-none focus:text-white">Profile</NavLink></li>
+                    <li><NavLink onClick={() => setIsMenuOpen(false)} to="/" className="text-2xl font-mono cursor-pointer transition-all focus:ring-2 focus:ring-yellow-500 focus:outline-none focus:text-white">Delete account</NavLink></li>
+                    
                   </>
                )}
               </ul>

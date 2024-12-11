@@ -2,7 +2,6 @@ import React from 'react'
 import 'quill/dist/quill.snow.css';  
 import { useQuill } from 'react-quilljs';
 import { useEffect } from 'react';
-//https://www.npmjs.com/package/react-quilljs
 
 const editorStyle={ 
     maxWidth: 500,
@@ -26,11 +25,11 @@ export const Story = ({setStory,uploaded}) => {
        
         ],
         clipboard: {
-            matchVisual: false, // a kimásolt formázást tisztitja
+            matchVisual: false, 
         },
     };
 
-    const placeholder = 'írj...';
+    const placeholder = 'Write something here';
 
     const { quill, quillRef } = useQuill({ theme, modules, placeholder });
 
@@ -39,7 +38,6 @@ export const Story = ({setStory,uploaded}) => {
     useEffect(() => {
         if (quill) {
             quill.on('text-change', () => {
-                // Az aktuális szöveg mentése minden változtatáskor
                 setStory(quill.root.innerHTML);
             });
         }
