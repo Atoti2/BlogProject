@@ -4,3 +4,9 @@ export const extractUrlAndId = (cloudinaryUrl) => {
     const id = cloudinaryUrl.substring(lastSlashIndex+1)
     return { url, id }
 }
+
+export const sanitizeHTML = (html) => {
+    const doc = new DOMParser().parseFromString(html, "text/html")
+    return doc.body.textContent || ''
+    
+}

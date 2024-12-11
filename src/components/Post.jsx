@@ -1,7 +1,9 @@
 import React from 'react'
+import { sanitizeHTML } from '../utils/utils';
+
 
 const Post = ({title, desc, img}) => {
-  const splitDesc = desc.split(' ', 5);
+  const splitDesc = sanitizeHTML(desc).split(' ', 5);
   const truncatedDesc = splitDesc.join(' ') + (desc.split(' ').length > 5 ? '...' : '');
   
   return (
