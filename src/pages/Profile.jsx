@@ -54,9 +54,9 @@ const Profile = () => {
               type="text"
               name="displayName"
               placeholder="Username"
-              className="mt-2 mb-4 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
             />
-            {errors.displayName && <p className="text-red-500 text-sm">{errors.displayName.message}</p>}
+            {errors.displayName && <p className="text-red-500 text-sm font-bold mb-5">{errors.displayName.message}</p>}
 
             <label htmlFor='file' className="block text-sm font-medium text-gray-700">Profile picture upload (PNG, JPG)</label>
             <input
@@ -74,7 +74,7 @@ const Profile = () => {
               type="file"
               onChange={(e) => setAvatar(URL.createObjectURL(e.target.files[0]))}
             />
-            {errors.file && <p className="text-red-500 text-sm">{errors.file.message}</p>}
+            {errors.file && <p className="text-red-500 text-sm font-bold">{errors.file.message}</p>}
             
             <button
               type="submit"

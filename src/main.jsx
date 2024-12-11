@@ -8,6 +8,6 @@ createRoot(document.getElementById('root')).render(
     <CategProvider>
       <UserProvider>
         <App />
-      </UserProvider>,
+      </UserProvider>
     </CategProvider>
 )

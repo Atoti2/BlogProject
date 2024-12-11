@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { Outlet, NavLink, useLocation } from 'react-router-dom'
+import React, { useState, useEffect } from 'react';
+import { Outlet, NavLink, useLocation } from 'react-router-dom';
 import { FaBlogger } from "react-icons/fa";
 import { HiDotsVertical } from "react-icons/hi";
 import { useContext } from 'react';
@@ -10,13 +10,14 @@ const NavBar = () => {
   const location = useLocation();
   const { user, logOutUser } = useContext(UserContext);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [avatar, setAvatar] = useState(null)
+  const [avatar, setAvatar] = useState(null);
 
   useEffect(() => {
-    user?.photoURL && setAvatar(extractUrlAndId(user.photoURL).url)
-  }, [user])
-  
-  
+    if (user?.photoURL) {
+      setAvatar(extractUrlAndId(user.photoURL).url);
+    }
+  }, [user]);
+
   const isHomePage = location.pathname === "/";
   const isAuth = location.pathname === "/register" || location.pathname === "/login"; 
   const isLoggedIn = user != null;
@@ -57,8 +58,8 @@ const NavBar = () => {
           {isMenuOpen && (
             <div className="lg:hidden absolute top-16 left-0 w-full bg-base-100 p-2 rounded-box shadow-lg z-[1]">
               <ul className="menu menu-sm gap-5">
-                {tabs.map((tab) => (
-                  <li key={tab.route}>
+                {tabs.filter(tab => tab.show).map((tab) => (
+                  <li key={tab.path}>
                     <NavLink 
                       onClick={() => setIsMenuOpen(false)}
                       className={`text-2xl font-mono cursor-pointer transition-all focus:ring-2 focus:ring-yellow-500 focus:outline-none focus:text-white`} 
@@ -85,7 +86,7 @@ const NavBar = () => {
 
           <div className="navbar-center hidden lg:flex w-full justify-between items-center">
             <ul className="menu menu-horizontal px-1 flex justify-start items-center gap-5 text-slate-100">
-              {tabs.map((tab) => (
+              {tabs.filter(tab => tab.show).map((tab) => (
                 <li key={tab.path}>
                   <NavLink 
                     className={`
@@ -147,6 +148,6 @@ const NavBar = () => {
       <Outlet />
     </div>
   );
-}
+};
 
 export default NavBar;
