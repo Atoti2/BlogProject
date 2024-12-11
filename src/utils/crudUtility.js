@@ -13,3 +13,10 @@ export const addPost = async (formData) => {
     const newItem={...formData, timestamp:serverTimestamp()}
     await addDoc(collectionRef, newItem)
 }
+
+export const readPosts = (setPosts) => {
+    const collectionReference = collection(db, 'posts')
+    const q=query(collectionReference, orderBy('title', 'desc'))
+    const unsubscribe = onSnapshot(q, (snapshot) => {setPosts(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})))})
+    return unsubscribe;
+}

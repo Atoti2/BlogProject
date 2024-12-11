@@ -24,7 +24,7 @@ function App() {
             element: <NotFound/>
           },
           {
-            path: "/posts/:id",
+            path: "/posts",
             element: <Posts/>
           },
           {

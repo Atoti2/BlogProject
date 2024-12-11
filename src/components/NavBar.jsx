@@ -24,7 +24,7 @@ const NavBar = () => {
 
   const tabs = [
     { route: <FaBlogger />, path: "/", show: true },
-    { route: "Posts", path: "/posts/all", show: true },
+    { route: "Posts", path: "/posts", show: true },
     { route: "Write", path: "/update/:id", show: isLoggedIn },
   ];
 
