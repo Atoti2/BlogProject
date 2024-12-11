@@ -11,7 +11,8 @@ const Post = ({title, desc}) => {
       />
     </figure>
     <div className="card-body">
-      <h2 className="card-title bg-slate-900/80 w-fit p-1 rounded-xl text-slate-100">{title}</h2>
+      <h2 className="card-title">{title}</h2>
+      <h3 className='bg-indigo-700 w-fit text-slate-100 p-1 rounded-xl'>category</h3>
       <p className='my-4 line-clamp-2'>{desc}</p>
       <div className="card-actions items-center">
         <button className="p-3 rounded-md text-slate-100 bg-indigo-700 hover:bg-white hover:text-indigo-700 transition-all">Read more</button>
