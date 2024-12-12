@@ -78,7 +78,7 @@ const NavBar = () => {
                   <>
                     <li><NavLink to="/" onClick={() => logOutUser()} className="text-2xl font-mono cursor-pointer transition-all focus:ring-2 focus:ring-yellow-500 focus:outline-none focus:text-white">Log out</NavLink></li>
                     <li><NavLink onClick={() => setIsMenuOpen(false)} to="/profile" className="text-2xl font-mono cursor-pointer transition-all focus:ring-2 focus:ring-yellow-500 focus:outline-none focus:text-white">Profile</NavLink></li>
-                    <li><NavLink onClick={() => setIsMenuOpen(false)} to="/" className="text-2xl font-mono cursor-pointer transition-all focus:ring-2 focus:ring-yellow-500 focus:outline-none focus:text-white">Delete account</NavLink></li>
+                    
                     
                   </>
                )}
@@ -117,7 +117,6 @@ const NavBar = () => {
                     </div>
                     <ul tabIndex={0} className="dropdown-content menu mt-5 gap-3 bg-slate-800 text-slate-100 rounded-box z-[1] w-52 p-2 shadow">
                       <NavLink to={"/profile"}><li className='cursor-pointer hover:scale-[1.03]'>Personal data</li></NavLink>
-                      <li className='cursor-pointer hover:scale-[1.03]'>Delete account</li>
                     </ul>
                   </div>
                   <NavLink to="/profile">

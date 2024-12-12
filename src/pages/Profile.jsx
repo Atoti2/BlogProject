@@ -39,7 +39,7 @@ const Profile = () => {
 
   return (
     <div className='min-h-screen flex items-center justify-center bg-gray-100 px-4 sm:px-6 md:px-8'>
-      <div className="w-full max-w-sm bg-white p-6 rounded-lg shadow-lg">
+      <div className="w-full max-w-sm bg-white p-6 rounded-lg shadow-lg mt-20">
         <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">User profile settings</h2>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-4">
@@ -84,6 +84,12 @@ const Profile = () => {
             </button>
           </div>
         </form>
+        <button
+              type="submit"
+              className="w-full py-2 mb-4 px-4 bg-red-600 text-white font-bold rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
+            >
+              Delete account
+            </button>
         <div className='flex justify-center'> 
           {loading && <span className="loading loading-dots loading-lg"></span>}
 
