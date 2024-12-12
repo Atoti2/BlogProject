@@ -7,16 +7,18 @@ import { useEffect } from 'react';
 import { extractUrlAndId } from '../utils/utils';
 import { useConfirm } from 'material-ui-confirm';
 import { useNavigate } from 'react-router';
-import Home from './Home';
 
 const Profile = () => {
   const { user, updateUser, msg, deleteAccount, logOutUser } = useContext(UserContext);
-  
-  if(!user) return <Home/>
+  const navigate = useNavigate()
+
+
+  useEffect(() => {
+    !user && navigate("/")
+  }, [user])
 
   const [loading, setLoading] = useState(false)
   const [avatar, setAvatar] = useState(null)
-  const navigate = useNavigate()
   useEffect(() => {
     user?.photoURL && setAvatar(extractUrlAndId(user.photoURL).url)
   }, [user])
