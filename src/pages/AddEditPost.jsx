@@ -1,5 +1,4 @@
 import React from 'react';
-import 'quill/dist/quill.snow.css';  
 import { useState } from 'react';
 import { useContext } from 'react';
 import { UserContext } from '../context/UserContext';

@@ -5,11 +5,18 @@ import Toastify from '../components/Toastify';
 import { uploadFile } from '../utils/uploadFile';
 import { useEffect } from 'react';
 import { extractUrlAndId } from '../utils/utils';
+import { useConfirm } from 'material-ui-confirm';
+import { useNavigate } from 'react-router';
+import Home from './Home';
 
 const Profile = () => {
-  const { user, updateUser, msg } = useContext(UserContext);
+  const { user, updateUser, msg, deleteAccount, logOutUser } = useContext(UserContext);
+  
+  if(!user) return <Home/>
+
   const [loading, setLoading] = useState(false)
   const [avatar, setAvatar] = useState(null)
+  const navigate = useNavigate()
   useEffect(() => {
     user?.photoURL && setAvatar(extractUrlAndId(user.photoURL).url)
   }, [user])
@@ -19,9 +26,24 @@ const Profile = () => {
       displayName: user?.displayName || '',
     }
   });
-  
-  console.log(user);
-  
+
+  const confirm = useConfirm();
+  const handleDelete = async () => {
+    try {
+      await confirm({
+        description: "Warning! This action is permanent.",
+        confirmationText: 'Yes',
+        cancellationText: "No",
+        title: "Are you sure you want to delete your account?"
+      })
+      await deleteAccount()
+      logOutUser()
+      navigate('/')
+
+    } catch (error) {
+        console.log('mégsem:' ,error);
+    }
+  }
 
   const onSubmit = async (data) => {
     setLoading(true)
@@ -86,6 +108,7 @@ const Profile = () => {
         </form>
         <button
               type="submit"
+              onClick={handleDelete}
               className="w-full py-2 mb-4 px-4 bg-red-600 text-white font-bold rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
             >
               Delete account
