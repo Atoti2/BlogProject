@@ -48,18 +48,29 @@ const Profile = () => {
   }
 
   const onSubmit = async (data) => {
-    setLoading(true)
+    setLoading(true);
     try {
       const file = data?.file ? data.file[0] : null;
-      const { url, id } = file ? await uploadFile(file) : null
-      
-      updateUser(data.displayName, url+ '/' +id);
+  
+      if (file) {
+        const uploadResult = await uploadFile(file);
+  
+        if (!uploadResult || !uploadResult.url || !uploadResult.id) {
+          throw new Error("File upload failed or returned invalid data.");
+        }
+  
+        const { url, id } = uploadResult;
+        updateUser(data.displayName, `${url}/${id}`);
+      } else {
+        updateUser(data.displayName, user.photoURL);
+      }
     } catch (error) {
       console.log(error);
-    } finally{
-      setLoading(false)
+    } finally {
+      setLoading(false);
     }
   };
+  
 
   return (
     <div className='min-h-screen flex items-center justify-center bg-gray-100 px-4 sm:px-6 md:px-8'>
