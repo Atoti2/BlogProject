@@ -26,8 +26,7 @@ export const readPosts = (setPosts, selectedCateg) => {
 }
 
 export const readPost = async (setPost, postId) => {
-    const collectionReference = collection(db, 'posts')
-    const q = query(collectionReference, where('id', '==', postId))
-    const unsubscribe = onSnapshot(q, (snapshot) => {setPost(snapshot.docs.map(doc => ({...doc.data(), id: doc.id})))})
-    return unsubscribe;
+    const docRef = doc(db,'posts',postId)
+    const docSnap = await getDoc(docRef)
+    setPost({...docSnap.data(), id: docSnap.id})
 }
