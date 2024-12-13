@@ -1,6 +1,6 @@
 import React from 'react'
 import Topic from '../components/Topic'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { CategContext } from '../context/CategContext'
 
 const Home = () => {

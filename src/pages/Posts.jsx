@@ -6,28 +6,15 @@ import { readPosts } from '../utils/crudUtility';
 
 const Posts = () => {
   const { categories } = useContext(CategContext);
+  const [selCateg, setSelCateg] = useState([])
   const [posts, setPosts] = useState([]);
-  const [selectedCategories, setSelectedCategories] = useState([]);
-  const [filteredPosts, setFilteredPosts] = useState([]);
-  console.log(posts);
   
   useEffect(() => {
-    readPosts(setPosts);
-  }, []);
-
-  useEffect(() => {
-    if (selectedCategories.length > 0) {
-      const filtered = posts.filter(post =>
-        selectedCategories.includes(post.category)
-      );
-      setFilteredPosts(filtered);
-    } else {
-      setFilteredPosts(posts);
-    }
-  }, [selectedCategories, posts]);
+    readPosts(setPosts, selCateg);
+  }, [selCateg]);
 
   const handleCategoryChange = (categoryName) => {
-    setSelectedCategories(prevState => {
+    setSelCateg(prevState => {
       if (prevState.includes(categoryName)) {
         return prevState.filter(category => category !== categoryName);
       } else {
@@ -47,26 +34,30 @@ const Posts = () => {
         <div className="flex gap-10 m-auto flex-col sm:flex-row">
           {categories?.length > 0 && categories.map((category) => (
             <div
-              className='bg-slate-100/50 p-1 rounded-md flex items-center gap-10'
+              className=' p-1 rounded-md flex items-center gap-10'
               key={category.name}
             >
               <span className="label-text">{category.name}</span>
               <input
                 type="checkbox"
                 className="checkbox"
+                checked={selCateg.includes(category.name)}
                 onChange={() => handleCategoryChange(category.name)}
               />
             </div>
           ))}
         </div>
 
-        {filteredPosts?.length > 0 ? (
-          filteredPosts.map((post) => (
-            <Post key={post.id} title={post.title} desc={post.story} img={post.photo.url} category={post.category}/>
-          ))
-        ) : (
-          <div className="text-center text-lg text-red-500">No posts available for the selected categories.</div>
-        )}
+          {posts.length > 0 ? (
+            posts && posts.map((post) => (
+              <Post key={post.id} title={post.title} desc={post.story} img={post.photo.url} category={post.category} id={post.id}/>
+            ))
+          )
+          :
+          <p className='text-red-600 text-center font-bold text-lg'>No post available of the selected category.</p>
+          }
+       
+        
       </div>
     </div>
   );

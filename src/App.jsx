@@ -8,6 +8,7 @@ import Auth from "./pages/Auth"
 import PasswordReset from "./pages/PasswordReset"
 import Profile from "./pages/Profile"
 import Admin from "./pages/Admin"
+import SinglePost from "./pages/SinglePost"
 function App() {
 
   const router = createBrowserRouter(
@@ -50,6 +51,10 @@ function App() {
           {
             path: "/admin",
             element: <Admin/>
+          },
+          {
+            path: "/post/:id",
+            element: <SinglePost/>
           }
         ]
       }
