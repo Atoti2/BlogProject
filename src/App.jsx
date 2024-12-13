@@ -53,7 +53,7 @@ function App() {
             element: <Admin/>
           },
           {
-            path: "/post/:id",
+            path: "/posts/detail/:id",
             element: <SinglePost/>
           }
         ]

@@ -3,10 +3,12 @@ import { useContext } from 'react';
 import { CategContext } from '../context/CategContext';
 import Post from '../components/Post';
 import { readPosts } from '../utils/crudUtility';
+import { useSearchParams } from 'react-router';
 
 const Posts = () => {
   const { categories } = useContext(CategContext);
-  const [selCateg, setSelCateg] = useState([])
+  const [searchParams] = useSearchParams()
+  const [selCateg, setSelCateg] = useState(searchParams.get('ctg') ? [searchParams.get('ctg')] : [])
   const [posts, setPosts] = useState([]);
   
   useEffect(() => {
@@ -41,7 +43,7 @@ const Posts = () => {
               <input
                 type="checkbox"
                 className="checkbox"
-                checked={selCateg.includes(category.name)}
+                checked={selCateg.includes(category.name)}  
                 onChange={() => handleCategoryChange(category.name)}
               />
             </div>
@@ -54,7 +56,7 @@ const Posts = () => {
             ))
           )
           :
-          <p className='text-red-600 text-center font-bold text-lg'>No post available of the selected category.</p>
+          <p className='text-red-600 text-center font-bold text-lg'>No post available for the selected category.</p>
           }
        
         

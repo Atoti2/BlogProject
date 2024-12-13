@@ -19,7 +19,7 @@ const Topic = ({ title, url}) => {
         </div>
 
         <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-10">
-          <NavLink to={`/posts`}>
+          <NavLink to={`/posts?ctg=${title}`}>
             <button className="p-3 bg-indigo-700 border-none text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
               Check it out
             </button>

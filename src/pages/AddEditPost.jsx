@@ -31,7 +31,8 @@ const AddEditPost = () => {
             story,
             author: user.displayName,
             userId: user.uid,
-            category: category
+            category: category,
+            likes: []
         }
         
         try {
