@@ -6,13 +6,16 @@ import { BiSolidLike } from "react-icons/bi";
 import { MdDelete } from "react-icons/md";
 import { useConfirm } from 'material-ui-confirm';
 import { deletePicture } from '../utils/uploadFile';
+import { UserContext } from '../context/UserContext';
 
 const SinglePost = () => {
     const { id } = useParams()
     const [post, setPost] = useState(null)
+    const { user } = useContext(UserContext)
     const navigate = useNavigate()
     const confirm = useConfirm();
-
+    const isLoggedIn = user != null;
+  
     const handleDelete = async () => {
       try {
         await confirm(({
@@ -49,9 +52,22 @@ const SinglePost = () => {
               <div className='text-justify mr-auto ml-5 mt-14 bg-zinc-200 text-slate-900 w-full p-3 font-mono'>{parse(post.story)}</div>
               <div className='mr-auto ml-5 mt-3'>
                 <div className='flex items-center gap-3 '>
-                  <BiSolidLike  className='w-10 h-10 cursor-pointer'/>
-                  <p className='font-bold text-xl'>0</p>
-                  <MdDelete onClick={handleDelete} className='w-10 h-10 cursor-pointer'/>
+                  {isLoggedIn ? (
+                    <>
+                      <BiSolidLike className='w-10 h-10 cursor-pointer'/>
+                      <p className='font-bold text-xl'>0</p>
+                    </>
+                  )
+                  :
+                  <>
+                    <p>Likes: 0</p>
+                  </>
+                  }
+                  {
+                    post.userId == user?.uid && (
+                      <MdDelete onClick={handleDelete} className='w-10 h-10 cursor-pointer'/>
+                    )
+                  }
 
                 </div>
                 

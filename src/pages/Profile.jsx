@@ -28,7 +28,7 @@ const Profile = () => {
     }
   });
 
-    const userImageId = extractUrlAndId(user.photoURL).id
+    const userImageId = user?.photoURL &&extractUrlAndId(user.photoURL).id
     
 
   const confirm = useConfirm();

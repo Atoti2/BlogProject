@@ -1,7 +1,7 @@
 import React from 'react'
 import { sanitizeHTML } from '../utils/utils';
 import { NavLink, useNavigate } from 'react-router';
-const Post = ({title, desc, img, category, id}) => {
+const Post = ({title, desc, img, category, id, author}) => {
   const splitDesc = sanitizeHTML(desc).split(' ', 10);
   const truncatedDesc = splitDesc.join(' ') + (desc.split(' ').length > 5 ? '...' : '');
   const navigate = useNavigate()
@@ -17,6 +17,7 @@ const Post = ({title, desc, img, category, id}) => {
     </figure>
     <div className="card-body flex-1">
       <h2 className="card-title">{title}</h2>
+      <h4 className='text-sm'>Author: {author}</h4>
       <h3 className='bg-indigo-700 w-fit text-slate-100 p-2 rounded-xl text-sm'>{category}</h3>
       <p className='my-4 line-clamp-2'>{truncatedDesc}</p>
       <div className="card-actions items-center">
