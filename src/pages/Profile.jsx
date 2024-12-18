@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { UserContext } from '../context/UserContext';
 import Toastify from '../components/Toastify';
-import { uploadFile } from '../utils/uploadFile';
+import { deletePicture, uploadFile } from '../utils/uploadFile';
 import { useEffect } from 'react';
 import { extractUrlAndId } from '../utils/utils';
 import { useConfirm } from 'material-ui-confirm';
@@ -11,7 +11,6 @@ import { useNavigate } from 'react-router';
 const Profile = () => {
   const { user, updateUser, msg, deleteAccount, logOutUser } = useContext(UserContext);
   const navigate = useNavigate()
-
 
   useEffect(() => {
     !user && navigate("/")
@@ -29,6 +28,9 @@ const Profile = () => {
     }
   });
 
+    const userImageId = extractUrlAndId(user.photoURL).id
+    
+
   const confirm = useConfirm();
   const handleDelete = async () => {
     try {
@@ -38,6 +40,7 @@ const Profile = () => {
         cancellationText: "No",
         title: "Are you sure you want to delete your account?"
       })
+      deletePicture(userImageId)
       await deleteAccount()
       logOutUser()
       navigate('/')

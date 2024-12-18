@@ -16,3 +16,15 @@ export const uploadFile = async (file) => {
         throw error; 
     }
 };
+
+const url = "http://localhost:5000/post/"
+
+export const deletePicture = async (id) => {
+    console.log(id);
+    try {
+        await axios.delete(url + id);
+        
+    } catch (error) {
+        console.error("error: " + error)
+    }
+}

@@ -1,6 +1,8 @@
-import { addDoc, collection, onSnapshot, orderBy, query, serverTimestamp, where } from "firebase/firestore"
+import { addDoc, collection, deleteDoc, onSnapshot, orderBy, query, serverTimestamp, where } from "firebase/firestore"
 import { db } from "./firebaseApp"
 import { doc, getDoc } from "firebase/firestore";
+import axios from 'axios';
+
 
 export const readCategories = (setCategories) => {
     const collectionReference = collection(db, 'categories')
@@ -29,4 +31,9 @@ export const readPost = async (setPost, postId) => {
     const docRef = doc(db,'posts',postId)
     const docSnap = await getDoc(docRef)
     setPost({...docSnap.data(), id: docSnap.id})
+}
+
+export const deletePost = async (id) => {
+    const docRef = doc(db,'posts',id)
+    await deleteDoc(docRef)
 }
