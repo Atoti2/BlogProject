@@ -1,7 +1,6 @@
-import { addDoc, collection, deleteDoc, onSnapshot, orderBy, query, serverTimestamp, where } from "firebase/firestore"
+import { addDoc, collection, deleteDoc, onSnapshot, orderBy, query, serverTimestamp, updateDoc, where } from "firebase/firestore"
 import { db } from "./firebaseApp"
 import { doc, getDoc } from "firebase/firestore";
-import axios from 'axios';
 
 
 export const readCategories = (setCategories) => {
@@ -27,13 +26,41 @@ export const readPosts = (setPosts, selectedCateg) => {
     return unsubscribe;
 }
 
-export const readPost = async (setPost, postId) => {
+export const readPost = async (setPost, postId, setLikesNr = null) => {
     const docRef = doc(db,'posts',postId)
     const docSnap = await getDoc(docRef)
     setPost({...docSnap.data(), id: docSnap.id})
+    setLikesNr && setLikesNr(docSnap.data()?.likes.length)
+
 }
 
 export const deletePost = async (id) => {
     const docRef = doc(db,'posts',id)
     await deleteDoc(docRef)
+}
+
+export const toggleLike = async (uid, id) => {
+    return new Promise(
+        async(resolve, reject) => {
+
+            const docRef = doc(db,'posts',id)
+            const docSnap = await getDoc(docRef)
+            const likesArray = docSnap.data().likes || []
+        
+            if(likesArray.includes(uid)) {
+                await updateDoc(docRef, {likes: likesArray.filter(id => id != uid)})
+                resolve()
+            }else{
+                await updateDoc(docRef, {likes: [...likesArray, uid]})
+                resolve()
+            }
+        }
+    )
+   
+}
+
+export const readLikes = async (id, setLikesNr) => {
+    const docRef = doc(db,'posts',id)
+    const docSnap = await getDoc(docRef)
+    setLikesNr(docSnap.data().likes.length)
 }
