@@ -59,7 +59,7 @@ export const toggleLike = async (uid, id) => {
    
 }
 
-export const readLikes = async (id, setLikesNr) => {
+export const readLikes = async (id, setLikesNr = null) => {
     const docRef = doc(db,'posts',id)
     const docSnap = await getDoc(docRef)
     setLikesNr(docSnap.data().likes.length)

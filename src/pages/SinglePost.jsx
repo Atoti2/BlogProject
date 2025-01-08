@@ -53,7 +53,6 @@ const SinglePost = () => {
       }  
     }
     
-
     return (
         <div className='mt-32'>
           <button onClick={() => navigate("/posts")} className='p-3 mb-5 rounded-md text-slate-100 bg-indigo-700 hover:bg-white hover:text-indigo-700 transition-all ml-5'>
@@ -84,8 +83,8 @@ const SinglePost = () => {
                   {isLoggedIn && post && post.userId === user?.uid && (
                     <>
                       <MdDelete onClick={handleDelete} className='w-10 h-10 cursor-pointer text-red-600'/>
-                      <MdEdit  className='w-10 h-10 cursor-pointer text-sky-600'/>
-                    </>
+                      <MdEdit onClick={() => navigate(`../update/${post.id}`)} className="w-10 h-10 cursor-pointer text-sky-600"/>
+                      </>
                   )}
                 </div>
               </div>

@@ -6,15 +6,18 @@ import Home from './Home';
 import { Story } from '../components/Story';
 import { useForm } from 'react-hook-form';
 import { uploadFile } from '../utils/uploadFile';
-import { addPost } from '../utils/crudUtility';
+import { addPost, readPosts } from '../utils/crudUtility';
 import DropDown from '../components/DropDown';
 import { CategContext } from '../context/CategContext';
 import Alerts from '../components/Alerts';
+import { useParams } from 'react-router';
+import { useEffect } from 'react';
 
 const AddEditPost = () => {
-
+ 
     const [story, setStory] = useState(null)
     const [uploaded, setUploaded] = useState(false)
+    const [post, setPost] = useState(null)
     const [loading, setLoading] = useState(false)
     const [photo, setPhoto] = useState(null)
     const [category, setCategory] = useState(null)
@@ -22,7 +25,15 @@ const AddEditPost = () => {
     const { categories } = useContext(CategContext)
   
     const {user} = useContext(UserContext)
+
+    const params = useParams()
+    useEffect(() => {
+        readPosts(params.id, setPost)
+    }, [params?.id])
+
     if(!user) return <Home/>
+
+    
     
     const onSubmit = async (data) => {
         setLoading(true)
