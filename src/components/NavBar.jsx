@@ -15,8 +15,9 @@ const NavBar = () => {
   useEffect(() => {
     if (user?.photoURL) {
       setAvatar(extractUrlAndId(user.photoURL).url);
+      !user && setAvatar(null)
     }
-  }, [user]);
+  }, [user, user?.photoURL]);
 
   const isHomePage = location.pathname === "/";
   const isAuth = location.pathname === "/register" || location.pathname === "/login"; 

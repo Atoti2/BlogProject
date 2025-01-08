@@ -7,15 +7,18 @@ import { MdDelete } from "react-icons/md";
 import { useConfirm } from 'material-ui-confirm';
 import { deletePicture } from '../utils/uploadFile';
 import { UserContext } from '../context/UserContext';
+import { MdEdit } from "react-icons/md";
+import Alerts from '../components/Alerts';
 
 const SinglePost = () => {
     const { id } = useParams()
     const [post, setPost] = useState(null)
+    const [text, setText] = useState(null)
     const { user } = useContext(UserContext)
     const navigate = useNavigate()
     const confirm = useConfirm();
     const isLoggedIn = user != null;
-  
+    
     const handleDelete = async () => {
       try {
         await confirm(({
@@ -32,7 +35,6 @@ const SinglePost = () => {
       }
     }
 
-
     useEffect(() => {
         readPost(setPost, id)
     }, [])  
@@ -40,41 +42,50 @@ const SinglePost = () => {
     if (!post) {
         return <div>Loading...</div> 
     }
+
+    const handleLike = () => {
+      if(!user) setText("Only logged in users can like the post!")
+    }
     
 
     return (
         <div className='mt-32'>
-          <button className='p-3 mb-5 rounded-md text-slate-100 bg-indigo-700 hover:bg-white hover:text-indigo-700 transition-all ml-5' onClick={() => navigate("/posts")}>Go back</button>
+          <button onClick={() => navigate("/posts")} className='p-3 mb-5 rounded-md text-slate-100 bg-indigo-700 hover:bg-white hover:text-indigo-700 transition-all ml-5'>
+            Go back
+          </button>
           {post && (
-            <div className='flex flex-col items-center justify-center max-w-[800px] m-auto'>
-              <img src={post.photo.url} alt={post.title} className='w-auto h-96 max-h-96 rounded-lg shadow-xl object-cover' />
-              <h3 className='text-2xl font-mono mt-5 '>{post.title}</h3>
-              <div className='text-justify mr-auto ml-5 mt-14 bg-zinc-200 text-slate-900 w-full p-3 font-mono'>{parse(post.story)}</div>
-              <div className='mr-auto ml-5 mt-3'>
-                <div className='flex items-center gap-3 '>
-                  {isLoggedIn ? (
+            <div className='flex flex-col items-center justify-center max-w-full sm:max-w-[800px] m-auto mx-5 mb-5'>
+              <img 
+                src={post.photo.url} 
+                alt={post.title} 
+                className='w-full h-96 max-h-96 rounded-lg shadow-xl object-cover '
+              />
+              <h3 className='text-2xl font-mono mt-5 text-center sm:text-left'>{post.title}</h3>
+              <div className='text-justify sm:mr-auto sm:ml-5 mt-14 bg-zinc-200 text-slate-900 w-full p-3 font-mono'>
+                {parse(post.story)}
+              </div>
+              <div className='sm:mr-auto sm:ml-5 mt-3'>
+                <div className='flex items-center gap-3 justify-center sm:justify-start'>
+                  {isLoggedIn && post ? (
                     <>
-                      <BiSolidLike className='w-10 h-10 cursor-pointer'/>
-                      <p className='font-bold text-xl'>0</p>
+                      <BiSolidLike onClick={handleLike} className='w-10 h-10 cursor-pointer text-purple-600'/>
+                      <p className='font-bold text-xl'>{post.likes.length}</p>
                     </>
                   )
                   :
-                  <>
-                    <p>Likes: 0</p>
-                  </>
+                  <p className='font-bold'>Likes: {post.likes.length}</p>
                   }
-                  {
-                    post.userId == user?.uid && (
-                      <MdDelete onClick={handleDelete} className='w-10 h-10 cursor-pointer'/>
-                    )
-                  }
-
+                  {isLoggedIn && post && post.userId === user?.uid && (
+                    <>
+                      <MdDelete onClick={handleDelete} className='w-10 h-10 cursor-pointer text-red-600'/>
+                      <MdEdit  className='w-10 h-10 cursor-pointer text-sky-600'/>
+                    </>
+                  )}
                 </div>
-                
               </div>
-            
             </div>
           )}
+          {text && <Alerts message={text} error={true}/>}
         </div>
     )
 }
