@@ -28,7 +28,7 @@ const SinglePost = () => {
           cancellationText: "No",
           title: "Are you sure you want to delete your post?"
         }))
-        deletePost(id)
+        await deletePost(id)
         await deletePicture(post.photo.id)
         navigate("/posts")
       } catch (error) {
@@ -41,8 +41,13 @@ const SinglePost = () => {
     }, [])  
 
     if (!post) {
-        return <div>Loading...</div> 
-    }
+      return (
+        <div className="flex justify-center items-center mt-32">
+          <div className="spinner-border animate-spin w-16 h-16 border-4 border-t-indigo-600 rounded-full"></div>
+        </div>
+      );
+  }
+  
 
     const handleLike = async () => {
       if(!user) setText("Only logged in users can like the post!")
@@ -58,14 +63,15 @@ const SinglePost = () => {
           </button>
           {post && (
             <div className='flex flex-col items-center justify-center max-w-full sm:max-w-[800px] m-auto mx-5 mb-5'>
-              <img 
-                src={post.photo.url} 
-                alt={post.title} 
-                className='w-full h-96 max-h-96 rounded-lg shadow-xl object-cover '
-              />
-              <h3 className='text-2xl font-mono mt-5 text-center sm:text-left'>{post.title}</h3>
+            <img 
+              src={post?.photo?.url || ""} 
+              alt={post?.title || "Post"} 
+              className='w-full h-96 max-h-96 rounded-lg shadow-xl object-cover '
+            />
+
+              <h3 className='text-2xl font-mono mt-5 text-center sm:text-left'>{post?.title}</h3>
               <div className='text-justify sm:mr-auto sm:ml-5 mt-14 bg-zinc-200 text-slate-900 w-full p-3 font-mono'>
-                {parse(post.story)}
+                {parse(post?.story)}
               </div>
               <div className='sm:mr-auto sm:ml-5 mt-3'>
                 <div className='flex items-center gap-3 justify-center sm:justify-start'>
