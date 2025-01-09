@@ -6,7 +6,7 @@ import Home from './Home';
 import { Story } from '../components/Story';
 import { useForm } from 'react-hook-form';
 import { uploadFile } from '../utils/uploadFile';
-import { addPost, readPosts } from '../utils/crudUtility';
+import { addPost, readPost } from '../utils/crudUtility';
 import DropDown from '../components/DropDown';
 import { CategContext } from '../context/CategContext';
 import Alerts from '../components/Alerts';
@@ -26,8 +26,9 @@ const AddEditPost = () => {
     const {user} = useContext(UserContext)
 
     const params = useParams()
+    
     useEffect(() => {
-        if(params?.id) readPosts(params.id, setPost)
+        if(params?.id) readPost(setPost, params.id)
     }, [params?.id])
     
     console.log(post);
