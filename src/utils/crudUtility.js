@@ -2,7 +2,6 @@ import { addDoc, collection, deleteDoc, onSnapshot, orderBy, query, serverTimest
 import { db } from "./firebaseApp"
 import { doc, getDoc } from "firebase/firestore";
 
-
 export const readCategories = (setCategories) => {
     const collectionReference = collection(db, 'categories')
     const q=query(collectionReference, orderBy('name', 'asc'))
@@ -26,12 +25,12 @@ export const readPosts = (setPosts, selectedCateg) => {
     return unsubscribe;
 }
 
-export const readPost = async (setPost, postId, setLikesNr = null) => {
+export const readPost = async (setPost, postId) => {
     const docRef = doc(db,'posts',postId)
-    const docSnap = await getDoc(docRef)
-    setPost({...docSnap.data(), id: docSnap.id})
-    setLikesNr && setLikesNr(docSnap.data()?.likes.length)
-
+    const unsubscribe = onSnapshot(docRef, (snapshot) => {
+        setPost({...snapshot.data(), id: snapshot.id})
+    })
+    return unsubscribe;
 }
 
 export const deletePost = async (id) => {
@@ -40,27 +39,12 @@ export const deletePost = async (id) => {
 }
 
 export const toggleLike = async (uid, id) => {
-    return new Promise(
-        async(resolve, reject) => {
-
-            const docRef = doc(db,'posts',id)
-            const docSnap = await getDoc(docRef)
-            const likesArray = docSnap.data().likes || []
-        
-            if(likesArray.includes(uid)) {
-                await updateDoc(docRef, {likes: likesArray.filter(id => id != uid)})
-                resolve()
-            }else{
-                await updateDoc(docRef, {likes: [...likesArray, uid]})
-                resolve()
-            }
-        }
-    )
-   
-}
-
-export const readLikes = async (id, setLikesNr = null) => {
-    const docRef = doc(db,'posts',id)
+    const docRef = doc(db, 'posts', id)
     const docSnap = await getDoc(docRef)
-    setLikesNr(docSnap.data().likes.length)
+    const likesArray = docSnap.data().likes || []
+    if(likesArray.includes(uid)){
+        await updateDoc(docRef, {likes: likesArray.filter(id => id != uid)})
+    }else{
+        await updateDoc(docRef, {likes: [...likesArray, uid]})
+    }
 }

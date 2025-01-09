@@ -52,7 +52,7 @@ const Posts = () => {
 
           {posts.length > 0 ? (
             posts && posts.map((post) => (
-              <Post key={post.id} title={post.title} desc={post.story} img={post.photo.url} category={post.category} id={post.id} author={post.author}/>
+              <Post key={post.id} title={post.title} desc={post.story} img={post.photo.url} category={post.category} id={post.id} author={post.author} likes={post.likes}/>
             ))
           )
           :

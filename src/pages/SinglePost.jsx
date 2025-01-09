@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
-import { deletePost, readLikes, readPost } from '../utils/crudUtility'
+import { deletePost, readPost } from '../utils/crudUtility'
 import parse from 'html-react-parser';
 import { BiSolidLike } from "react-icons/bi";
 import { MdDelete } from "react-icons/md";
@@ -15,7 +15,6 @@ const SinglePost = () => {
     const { id } = useParams()
     const [post, setPost] = useState(null)
     const [text, setText] = useState(null)
-    const [likesNr, setLikesNr] = useState(0)
     const { user } = useContext(UserContext)
     const navigate = useNavigate()
     const confirm = useConfirm();
@@ -38,7 +37,7 @@ const SinglePost = () => {
     }
 
     useEffect(() => {
-        readPost(setPost, id, setLikesNr)
+        readPost(setPost, id)
     }, [])  
 
     if (!post) {
@@ -48,8 +47,7 @@ const SinglePost = () => {
     const handleLike = async () => {
       if(!user) setText("Only logged in users can like the post!")
       else{
-        await toggleLike(user.uid, post.id, setLikesNr)
-        readLikes(id, setLikesNr)
+        toggleLike(user.uid, post.id)
       }  
     }
     
@@ -74,11 +72,11 @@ const SinglePost = () => {
                   {isLoggedIn && post ? (
                     <>
                       <BiSolidLike onClick={handleLike} className='w-10 h-10 cursor-pointer text-purple-600'/>
-                      <p className='font-bold text-xl'>{likesNr}</p>
+                      <p className='font-bold text-xl'>{post?.likes.length}</p>
                     </>
                   )
                   :
-                  <p className='font-bold'>Likes: {likesNr}</p>
+                  <p className='font-bold'>Likes: {post?.likes.length}</p>
                   }
                   {isLoggedIn && post && post.userId === user?.uid && (
                     <>

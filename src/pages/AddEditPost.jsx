@@ -23,14 +23,15 @@ const AddEditPost = () => {
     const [category, setCategory] = useState(null)
     const { register, handleSubmit, formState: { errors }, reset} = useForm();
     const { categories } = useContext(CategContext)
-  
     const {user} = useContext(UserContext)
 
     const params = useParams()
     useEffect(() => {
-        readPosts(params.id, setPost)
+        if(params?.id) readPosts(params.id, setPost)
     }, [params?.id])
-
+    
+    console.log(post);
+    
     if(!user) return <Home/>
 
     

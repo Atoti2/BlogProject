@@ -1,7 +1,7 @@
 import React from 'react'
 import { sanitizeHTML } from '../utils/utils';
 import { NavLink, useNavigate } from 'react-router';
-const Post = ({title, desc, img, category, id, author}) => {
+const Post = ({title, desc, img, category, id, author, likes}) => {
   const splitDesc = sanitizeHTML(desc).split(' ', 10);
   const truncatedDesc = splitDesc.join(' ') + (desc.split(' ').length > 5 ? '...' : '');
   const navigate = useNavigate()
@@ -23,7 +23,7 @@ const Post = ({title, desc, img, category, id, author}) => {
       <div className="card-actions items-center">
           <button onClick={() => navigate(`detail/${id}`)} className="p-3 rounded-md text-slate-100 bg-indigo-700 hover:bg-white hover:text-indigo-700 transition-all">Read more</button>
 
-        <p>Likes: 123412</p>
+        <p>Likes: {likes.length}</p>
       </div>
     </div>
 </div>
