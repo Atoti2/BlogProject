@@ -17,7 +17,7 @@ export const uploadFile = async (file) => {
     }
 };
 
-const url = "http://localhost:5000/post/"
+const url = "https://totiblogserver.onrender.com"
 
 export const deletePicture = async (id) => {
     console.log(id);
