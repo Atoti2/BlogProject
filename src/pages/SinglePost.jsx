@@ -71,18 +71,19 @@ const SinglePost = () => {
 
               <h3 className='text-2xl font-mono mt-5 text-center sm:text-left'>{post?.title}</h3>
               <div className='text-justify sm:mr-auto sm:ml-5 mt-14 bg-zinc-200 text-slate-900 w-full p-3 font-mono'>
-                {parse(post?.story)}
+                {post?.story ? parse(post.story) : "No story available."}
               </div>
+
               <div className='sm:mr-auto sm:ml-5 mt-3'>
                 <div className='flex items-center gap-3 justify-center sm:justify-start'>
                   {isLoggedIn && post ? (
                     <>
                       <BiSolidLike onClick={handleLike} className='w-10 h-10 cursor-pointer text-purple-600'/>
-                      <p className='font-bold text-xl'>{post?.likes.length}</p>
+                      <p className='font-bold text-xl'>{post?.likes?.length || 0}</p>
                     </>
                   )
                   :
-                  <p className='font-bold'>Likes: {post?.likes.length}</p>
+                  <p className='font-bold'>Likes: {post?.likes?.length || 0}</p>
                   }
                   {isLoggedIn && post && post.userId === user?.uid && (
                     <>
