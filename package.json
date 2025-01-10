@@ -24,6 +24,7 @@
     "react-router": "^7.0.1",
     "react-router-dom": "^7.0.1",
     "react-scroll-to-top": "^3.0.0",
+    "react-search-autocomplete": "^8.5.2",
     "react-simple-wysiwyg": "^3.2.0",
     "react-toastify": "^10.0.6"
   },

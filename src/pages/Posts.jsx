@@ -4,6 +4,7 @@ import { CategContext } from '../context/CategContext';
 import Post from '../components/Post';
 import { readPosts } from '../utils/crudUtility';
 import { useSearchParams } from 'react-router';
+import SearchBox from '../components/SearchBox';
 
 const Posts = () => {
   const { categories } = useContext(CategContext);
@@ -33,6 +34,9 @@ const Posts = () => {
   return (
     <div className='min-h-screen'>
       <div className='flex gap-10 justify-center flex-col m-10 mt-40'>
+        <div className='z-40 max-w-lg'>
+          {posts && <SearchBox items={posts.map(post => ({id: post.id, name: post.title}))}/>}
+        </div>
         <div className="flex gap-10 m-auto flex-col sm:flex-row">
           {categories?.length > 0 && categories.map((category) => (
             <div
@@ -57,9 +61,7 @@ const Posts = () => {
           )
           :
           <p className='text-red-600 text-center font-bold text-lg'>No post available for the selected category.</p>
-          }
-       
-        
+          } 
       </div>
     </div>
   );

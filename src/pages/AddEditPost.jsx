@@ -6,7 +6,7 @@ import Home from './Home';
 import { Story } from '../components/Story';
 import { useForm } from 'react-hook-form';
 import { uploadFile } from '../utils/uploadFile';
-import { addPost, readPost } from '../utils/crudUtility';
+import { addPost, readPost, updatePost } from '../utils/crudUtility';
 import DropDown from '../components/DropDown';
 import { CategContext } from '../context/CategContext';
 import Alerts from '../components/Alerts';
@@ -21,7 +21,8 @@ const AddEditPost = () => {
     const [loading, setLoading] = useState(false)
     const [photo, setPhoto] = useState(null)
     const [category, setCategory] = useState(null)
-    const { register, handleSubmit, formState: { errors }, reset} = useForm();
+    const [editing, setEditing] = useState(null)
+    const { register, handleSubmit, formState: { errors }, reset, setValue} = useForm();
     const { categories } = useContext(CategContext)
     const {user} = useContext(UserContext)
 
@@ -29,9 +30,17 @@ const AddEditPost = () => {
     
     useEffect(() => {
         if(params?.id) readPost(setPost, params.id)
+        setEditing(params.id != ':id')
     }, [params?.id])
-    
     console.log(post);
+    
+    useEffect(() => {
+        if(post){
+            setValue("title", post.title)
+            setCategory(post.category)
+            setStory(post.story)
+        }
+    }, [post])
     
     if(!user) return <Home/>
 
@@ -39,6 +48,16 @@ const AddEditPost = () => {
     
     const onSubmit = async (data) => {
         setLoading(true)
+        if(editing){
+            try {
+                updatePost(params.id, {...data, category, story})
+            } catch (error) {
+                console.log('update: ' + error);
+            }
+            finally{
+                setLoading(false)
+            }
+        }else{
         let newPostData = {
             ...data,
             story,
@@ -64,21 +83,28 @@ const AddEditPost = () => {
         } finally {
             setLoading(false)
         }
+    }
     };
 
+    console.log(editing);
+    
     return (
         <div className='min-h-screen flex items-center justify-center bg-gray-100 px-4 sm:px-6 md:px-8'>
             <div className="w-full max-w-sm bg-white p-6 rounded-lg shadow-lg my-32">
-                <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Post upload</h2>
+                <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">{editing ? "Edit post" : "Upload post"}</h2>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="mb-4">
                         <div className="avatar flex justify-center mb-4">
                             <div className="w-24 rounded-full">
-                                <img src={photo} />
+                            {post?.photo?.url ? (
+                                <img src={post.photo.url} alt="Post" />
+                                ) : (
+                                <div className='skeleton h-32 w-32'></div>
+                                )}  
                             </div>
                         </div>
                         <label className="block text-sm font-medium text-gray-700" htmlFor="category">Select a category</label>
-                        <DropDown setCategory={setCategory} categories={categories} />
+                        <DropDown setCategory={setCategory} categories={categories} category={category} />
                         <label htmlFor="title" className="block text-sm font-medium text-gray-700">Title</label>
                         <input
                             {...register('title', { required: 'Title is required' })}
@@ -89,30 +115,33 @@ const AddEditPost = () => {
                             className="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                         />
                         {errors.title && <p className="text-red-500 text-sm font-bold mb-5">{errors.title.message}</p>}
-
                         <label htmlFor='file' className="block text-sm font-medium text-gray-700">Post image upload (PNG, JPG)</label>
                         <input
-                            {...register('file',  { 
-                                required: 'Image is required',
-                                validate: (value) => {
-                                    if (!value[0]) return 'Image is required';
+                        disabled={editing}
+                        {...register('file', { 
+                            required: !editing && 'Image is required',  
+                            validate: (value) => {
+                                if (!editing && !value?.[0]) return 'Image is required';
+                                if (value?.[0]) {
                                     const fileExtension = value[0]?.name.split('.').pop().toLowerCase();
                                     const acceptedFormats = ['jpg', 'png'];
                                     if (!acceptedFormats.includes(fileExtension)) return 'Invalid file format!';
                                     if (value[0].size > 1 * 1000 * 1024) return 'File size too large. (>1MB)';
-                                    return true;
                                 }
-                            })}
-                            className="flex mt-2 h-9 cursor-pointer w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-foreground file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
-                            type="file"
-                            onChange={(e) => setPhoto(URL.createObjectURL(e.target.files[0]))}
-                        />
+                                return true;
+                            }
+                        })}
+                        className="flex mt-2 h-9 cursor-pointer w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-foreground file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+                        type="file"
+                        onChange={(e) => setPhoto(URL.createObjectURL(e.target.files[0]))}
+                    />
+
                         {errors.file && <p className="text-red-500 text-sm font-bold mb-5">{errors.file.message}</p>}
                         
-                        <Story setStory={setStory} uploaded={uploaded}/>
+                        <Story setStory={setStory} uploaded={uploaded} story={editing && post?.story }/>
                         
                         <button
-                            disabled={!category || !story || story?.length < 10}
+                            disabled={editing ? false : !category || !story || story?.length < 10}
                             type="submit"
                             className="w-full py-2 mt-4 px-4 bg-indigo-600 text-white font-bold rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-50"
                         >   
