@@ -84,6 +84,7 @@ const AddEditPost = () => {
                             {...register('title', { required: 'Title is required' })}
                             type="text"
                             name="title"
+                            maxLength={"50"}
                             placeholder="Title"
                             className="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                         />
